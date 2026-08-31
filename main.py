@@ -1,14 +1,22 @@
-from database.connection import get_connection
-from database.models import create_tables
+from database.queries import get_genres, delete_genre
 
 
 def main():
-    connection = get_connection()
-    print("Database connected successfully!")
-    connection.close()
+    print("Before deleting:")
 
-    create_tables()
-    print("Database tables created successfully!")
+    genres = get_genres()
+
+    for genre in genres:
+        print(genre)
+
+    delete_genre(3)
+
+    print("After deleting:")
+
+    genres = get_genres()
+
+    for genre in genres:
+        print(genre)
 
 
 if __name__ == "__main__":
