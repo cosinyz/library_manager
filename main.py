@@ -1,22 +1,23 @@
-from database.queries import get_genres, delete_genre
+from database.queries import get_books, delete_book
 
 
 def main():
     print("Before deleting:")
 
-    genres = get_genres()
+    books = get_books()
 
-    for genre in genres:
-        print(genre)
+    for book in books:
+        print(book)
 
-    delete_genre(3)
+    delete_book(2)
 
+    print()
     print("After deleting:")
 
-    genres = get_genres()
+    books = get_books()
 
-    for genre in genres:
-        print(genre)
+    for book in books:
+        print(book)
 
 
 if __name__ == "__main__":
