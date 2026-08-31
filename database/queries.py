@@ -140,3 +140,67 @@ def get_available_books():
     connection.close()
 
     return books
+
+
+def add_user(name, email):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO users (name, email)
+        VALUES (?, ?)
+        """,
+        (name, email)
+    )
+
+    connection.commit()
+    connection.close()
+
+
+def get_users():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT id, name, email
+        FROM users
+        """
+    )
+
+    users = cursor.fetchall()
+
+    connection.close()
+
+    return users
+
+
+def update_user_email(user_id, email):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        UPDATE users
+        SET email = ?
+        WHERE id = ?
+        """,
+        (email, user_id)
+    )
+
+    connection.commit()
+    connection.close()
+
+
+def delete_user(user_id):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "DELETE FROM users WHERE id = ?",
+        (user_id,)
+    )
+
+    connection.commit()
+    connection.close()
