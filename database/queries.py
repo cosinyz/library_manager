@@ -502,3 +502,30 @@ def get_active_users():
     return result
 
 
+def search_books(search_text):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT
+            books.id,
+            books.title,
+            books.author,
+            books.year,
+            genres.name,
+            books.is_available
+        FROM books
+        INNER JOIN genres ON books.genre_id = genres.id
+        WHERE books.title LIKE ?
+           OR books.author LIKE ?
+        ORDER BY books.title
+        """,
+        (f"%{search_text}%", f"%{search_text}%")
+    )
+
+    books = cursor.fetchall()
+
+    connection.close()
+
+    return books
