@@ -358,3 +358,147 @@ def get_books_with_genres():
     connection.close()
 
     return books
+
+
+def get_statistics():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM books")
+    books_count = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM users")
+    users_count = cursor.fetchone()[0]
+
+    cursor.execute("SELECT AVG(year) FROM books")
+    average_year = cursor.fetchone()[0]
+
+    cursor.execute("SELECT MIN(year) FROM books")
+    oldest_year = cursor.fetchone()[0]
+
+    cursor.execute("SELECT MAX(year) FROM books")
+    newest_year = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM borrowings")
+    borrowings_count = cursor.fetchone()[0]
+
+    cursor.execute("SELECT SUM(year) FROM books")
+    years_sum = cursor.fetchone()[0]
+
+    connection.close()
+
+    return {
+        "books_count": books_count,
+        "users_count": users_count,
+        "average_year": average_year,
+        "oldest_year": oldest_year,
+        "newest_year": newest_year,
+        "borrowings_count": borrowings_count,
+        "years_sum": years_sum
+    }
+
+
+def get_books_by_genre():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT genres.name, COUNT(books.id)
+        FROM books
+        INNER JOIN genres ON books.genre_id = genres.id
+        GROUP BY genres.name
+        ORDER BY COUNT(books.id) DESC
+        """
+    )
+
+    result = cursor.fetchall()
+
+    connection.close()
+
+    return result
+
+
+def get_books_by_author():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT author, COUNT(id)
+        FROM books
+        GROUP BY author
+        ORDER BY COUNT(id) DESC
+        """
+    )
+
+    result = cursor.fetchall()
+
+    connection.close()
+
+    return result
+
+
+def get_borrowings_by_user():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT users.name, COUNT(borrowings.id)
+        FROM users
+        INNER JOIN borrowings ON users.id = borrowings.user_id
+        GROUP BY users.name
+        ORDER BY COUNT(borrowings.id) DESC
+        """
+    )
+
+    result = cursor.fetchall()
+
+    connection.close()
+
+    return result
+
+
+def get_popular_genres():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT genres.name, COUNT(books.id)
+        FROM books
+        INNER JOIN genres ON books.genre_id = genres.id
+        GROUP BY genres.name
+        HAVING COUNT(books.id) > 5
+        """
+    )
+
+    result = cursor.fetchall()
+
+    connection.close()
+
+    return result
+
+
+def get_active_users():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT users.name, COUNT(borrowings.id)
+        FROM users
+        INNER JOIN borrowings ON users.id = borrowings.user_id
+        GROUP BY users.name
+        HAVING COUNT(borrowings.id) > 3
+        """
+    )
+
+    result = cursor.fetchall()
+
+    connection.close()
+
+    return result
+
+

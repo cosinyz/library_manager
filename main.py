@@ -1,22 +1,45 @@
-from database.queries import get_borrowing_history, get_books_with_genres
+from database.queries import (
+    get_books_by_genre,
+    get_books_by_author,
+    get_borrowings_by_user,
+    get_popular_genres,
+    get_active_users
+)
 
 
 def main():
-    print("=== BORROWING HISTORY ===")
+    print("=== BOOKS BY GENRE ===")
 
-    history = get_borrowing_history()
-
-    for record in history:
-        print(record)
+    for item in get_books_by_genre():
+        print(item)
 
     print()
 
-    print("=== BOOKS WITH AUTHORS AND GENRES ===")
+    print("=== BOOKS BY AUTHOR ===")
 
-    books = get_books_with_genres()
+    for item in get_books_by_author():
+        print(item)
 
-    for book in books:
-        print(book)
+    print()
+
+    print("=== BORROWINGS BY USER ===")
+
+    for item in get_borrowings_by_user():
+        print(item)
+
+    print()
+
+    print("=== POPULAR GENRES ===")
+
+    for item in get_popular_genres():
+        print(item)
+
+    print()
+
+    print("=== ACTIVE USERS ===")
+
+    for item in get_active_users():
+        print(item)
 
 
 if __name__ == "__main__":
