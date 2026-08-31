@@ -310,3 +310,51 @@ def return_book(book_id):
     connection.close()
 
     print("Book returned successfully.")
+
+
+def get_borrowing_history():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT
+            books.title,
+            users.name,
+            borrowings.borrow_date,
+            borrowings.return_date
+        FROM borrowings
+        INNER JOIN books ON borrowings.book_id = books.id
+        INNER JOIN users ON borrowings.user_id = users.id
+        ORDER BY borrowings.borrow_date
+        """
+    )
+
+    history = cursor.fetchall()
+
+    connection.close()
+
+    return history
+
+
+def get_books_with_genres():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT
+            books.title,
+            books.author,
+            genres.name
+        FROM books
+        INNER JOIN genres ON books.genre_id = genres.id
+        ORDER BY books.title
+        """
+    )
+
+    books = cursor.fetchall()
+
+    connection.close()
+
+    return books

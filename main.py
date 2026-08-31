@@ -1,23 +1,19 @@
-from database.queries import return_book, get_available_books
+from database.queries import get_borrowing_history, get_books_with_genres
 
 
 def main():
-    print("Available books before returning:")
+    print("=== BORROWING HISTORY ===")
 
-    books = get_available_books()
+    history = get_borrowing_history()
 
-    for book in books:
-        print(book)
-
-    print()
-
-    return_book(1)
+    for record in history:
+        print(record)
 
     print()
 
-    print("Available books after returning:")
+    print("=== BOOKS WITH AUTHORS AND GENRES ===")
 
-    books = get_available_books()
+    books = get_books_with_genres()
 
     for book in books:
         print(book)
