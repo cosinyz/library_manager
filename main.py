@@ -1,23 +1,26 @@
-from database.queries import get_users, delete_user
+from database.queries import return_book, get_available_books
 
 
 def main():
-    print("Before deleting:")
+    print("Available books before returning:")
 
-    users = get_users()
+    books = get_available_books()
 
-    for user in users:
-        print(user)
-
-    delete_user(3)
+    for book in books:
+        print(book)
 
     print()
-    print("After deleting:")
 
-    users = get_users()
+    return_book(1)
 
-    for user in users:
-        print(user)
+    print()
+
+    print("Available books after returning:")
+
+    books = get_available_books()
+
+    for book in books:
+        print(book)
 
 
 if __name__ == "__main__":
